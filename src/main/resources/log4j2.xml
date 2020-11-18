@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status="trace" -->
+<Configuration packages="com.example.logging">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="%style{%d{ISO8601}}{black} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable" />
+        </Console>
+        <Rewrite name="Rewrite">
+            <SensitiveDataPolicy
+                    maskMode="MASK"
+                    mask="*"
+                    minScore="0.9"
+                    entitiesToReplace="SSN,EMAIL"
+            />
+            <AppenderRef ref="Console" />
+        </Rewrite>
+    </Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+        </Root>
+        <!-- LOG "com.example*" at DEBUG level -->
+        <Logger name="com.example" level="debug" additivity="false">
+            <AppenderRef ref="Rewrite" />
+        </Logger>
+    </Loggers>
+
+</Configuration>
